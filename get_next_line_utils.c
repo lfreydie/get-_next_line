@@ -6,7 +6,7 @@
 /*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 09:55:59 by lefreydier        #+#    #+#             */
-/*   Updated: 2023/01/10 15:05:46 by lefreydier       ###   ########.fr       */
+/*   Updated: 2023/01/13 13:48:40 by lefreydier       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	strchr(char *str, char c)
 	return (0);
 }
 
-size_t  ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
 	int	i;
 

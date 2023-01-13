@@ -6,7 +6,7 @@
 /*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 09:25:21 by lefreydier        #+#    #+#             */
-/*   Updated: 2023/01/10 15:21:18 by lefreydier       ###   ########.fr       */
+/*   Updated: 2023/01/13 13:46:23 by lefreydier       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,44 @@ char	*ft_read(int fd, char *buffer)
 
 char	*ft_line(char *buffer)
 {
+	char	*res;
+	int		i;
 
+	i = 0;
+	res = (char *)ft_calloc(ft_strlen(buffer) + 1, sizeof(char));
+	if (!res)
+		return (NULL);
+	while (buffer[i] != '\n' && buffer[i] != '\0')
+	{
+		res[i] = buffer[i];
+		i ++;
+	}
+	res[i] = 0;
+	return (res);
 }
 
 char	*ft_next(char *buffer)
 {
+	char	*res;
+	int		i;
+	int		j;
 
+	i = 0;
+	j = 0;
+	while (buffer[i] != '\n' && buffer[i] != '\0')
+		i++;
+	res = (char *)ft_calloc((ft_strlen(buffer) - i) + 1, sizeof(char));
+	if (!res)
+		return (NULL);
+	while (buffer[i])
+	{
+		res[j] = buffer[i];
+		i++;
+		j++;
+	}
+	res[j] = 0;
+	free(buffer);
+	return (res);
 }
 
 char	*get_next_line(int fd)
