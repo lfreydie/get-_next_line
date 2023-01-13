@@ -6,13 +6,13 @@
 /*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 09:55:59 by lefreydier        #+#    #+#             */
-/*   Updated: 2023/01/13 13:48:40 by lefreydier       ###   ########.fr       */
+/*   Updated: 2023/01/13 14:09:18 by lefreydier       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	strchr(char *str, char c)
+int	ft_strchr(char *str, char c)
 {
 	int	i;
 
@@ -43,13 +43,14 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		i;
 	int		j;
 
+	i = 0;
 	if (!s1 || !s2)
 		return (NULL);
 	len_tot = ft_strlen(s1) + ft_strlen(s2);
 	new = malloc(sizeof(*new) * (len_tot + 1));
 	if (!new)
 		return (NULL);
-	while (s1[i] != 0)
+	while (s1[i])
 	{
 		new[i] = s1[i];
 		i++;
