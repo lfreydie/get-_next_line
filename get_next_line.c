@@ -6,7 +6,7 @@
 /*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 09:25:21 by lefreydier        #+#    #+#             */
-/*   Updated: 2023/01/13 14:33:18 by lefreydier       ###   ########.fr       */
+/*   Updated: 2023/01/16 15:54:34 by lefreydier       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_free(char *buffer, char *buftmp)
 
 	tmp = ft_strjoin(buffer, buftmp);
 	if (!tmp)
-		return (NULL);
+		return (free(buffer), free(buftmp), NULL);
 	free (buffer);
 	return (tmp);
 }
@@ -34,18 +34,15 @@ char	*ft_read(int fd, char *buffer)
 		if (!buffer)
 			return (NULL);
 	}
-	buftmp = (char *)ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	buftmp = (char *)ft_calloc(BUFFER_SIZE, sizeof(char));
 	if (!buftmp)
-		return (NULL);
+		return (free(buffer), NULL);
 	bytes_count = 1;
 	while (bytes_count > 0)
 	{
 		bytes_count = read(fd, buftmp, BUFFER_SIZE);
 		if (bytes_count == -1)
-		{
-			free(buftmp);
-			return (NULL);
-		}
+			return (free(buffer), free(buftmp), NULL);
 		buffer = ft_free(buffer, buftmp);
 		if (!buffer)
 			return (NULL);
@@ -66,7 +63,7 @@ char	*ft_line(char *buffer)
 		return (NULL);
 	while (buffer[i] != '\n' && buffer[i])
 		i ++;
-	res = (char *)ft_calloc(i + 2, sizeof(char));
+	res = (char *)ft_calloc(i + 1, sizeof(char));
 	if (!res)
 		return (NULL);
 	i = 0;
@@ -75,9 +72,8 @@ char	*ft_line(char *buffer)
 		res[i] = buffer[i];
 		i ++;
 	}
-
 	if (buffer[i] && buffer[i] == '\n')
-		res[i++] = '\n';
+		res[i++] = '\0';
 	return (res);
 }
 
@@ -91,11 +87,6 @@ char	*ft_next(char *buffer)
 	j = 0;
 	while (buffer[i] != '\n' && buffer[i])
 		i++;
-	if (buffer[i] == 0)
-	{
-		free(buffer);
-		return (NULL);
-	}
 	res = (char *)ft_calloc(ft_strlen(buffer) - i + 1, sizeof(char));
 	if (!res)
 		return (NULL);
@@ -111,16 +102,18 @@ char	*get_next_line(int fd)
 	static char	*buffer;
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0))
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) || fd > 1024)
 		return (NULL);
 	buffer = ft_read(fd, buffer);
 	if (!buffer)
 		return (NULL);
 	line = ft_line(buffer);
 	if (!line)
+		return (free(buffer), NULL);
+	if(!line[0])
 		return (NULL);
 	buffer = ft_next(buffer);
 	if (!buffer)
-		return (NULL);
+		return (free(buffer), free(line), NULL);
 	return (line);
 }

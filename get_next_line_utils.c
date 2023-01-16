@@ -6,7 +6,7 @@
 /*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 09:55:59 by lefreydier        #+#    #+#             */
-/*   Updated: 2023/01/13 14:09:18 by lefreydier       ###   ########.fr       */
+/*   Updated: 2023/01/16 15:34:09 by lefreydier       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,9 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		i++;
 	}
 	j = 0;
-	while (s2[j] != 0)
-	{
-		new[i] = s2[j];
-		i++;
-		j++;
-	}
-	new[len_tot] = 0;
+	while (s2[j])
+		new[i++] = s2[j++];
+	new[len_tot] = '\0';
 	return (new);
 }
 
