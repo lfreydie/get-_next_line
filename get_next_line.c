@@ -6,11 +6,24 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 09:25:21 by lefreydier        #+#    #+#             */
-/*   Updated: 2023/01/18 15:38:54 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/01/18 16:26:50 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*ft_tmp(char *tmp, char *buffer)
+{
+	tmp = buffer;
+	if (!tmp)
+	{
+		tmp = malloc(sizeof(char) * 1);
+		if (!tmp)
+			return (NULL);
+		tmp[0] = '\0';
+	}
+	return (tmp);
+}
 
 char	*ft_read(int fd, char *buffer)
 {
@@ -28,12 +41,9 @@ char	*ft_read(int fd, char *buffer)
 		if (bytes_count == -1 || (bytes_count == 0 && ft_strlen(buffer) < 1))
 			return (free(buftmp), NULL);
 		buftmp[bytes_count] = '\0';
-		tmp = buffer;
+		tmp = ft_tmp(tmp, buffer);
 		if (!tmp)
-		{
-			tmp = malloc(sizeof(char) * 1);
-			tmp[0] = '\0';
-		}
+			return (NULL);
 		buffer = ft_strjoin(tmp, buftmp);
 		if (!buffer)
 			return (free(buftmp), NULL);

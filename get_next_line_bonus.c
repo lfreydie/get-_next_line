@@ -6,11 +6,24 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 09:25:21 by lefreydier        #+#    #+#             */
-/*   Updated: 2023/01/18 15:43:59 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/01/18 16:27:33 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
+
+char	*ft_tmp(char *tmp, char *buffer)
+{
+	tmp = buffer;
+	if (!tmp)
+	{
+		tmp = malloc(sizeof(char) * 1);
+		if (!tmp)
+			return (NULL);
+		tmp[0] = '\0';
+	}
+	return (tmp);
+}
 
 char	*ft_read(int fd, char *buffer)
 {
@@ -28,12 +41,9 @@ char	*ft_read(int fd, char *buffer)
 		if (bytes_count == -1 || (bytes_count == 0 && ft_strlen(buffer) < 1))
 			return (free(buftmp), NULL);
 		buftmp[bytes_count] = '\0';
-		tmp = buffer;
+		tmp = ft_tmp(tmp, buffer);
 		if (!tmp)
-		{
-			tmp = malloc(sizeof(char) * 1);
-			tmp[0] = '\0';
-		}
+			return (NULL);
 		buffer = ft_strjoin(tmp, buftmp);
 		if (!buffer)
 			return (free(buftmp), NULL);
@@ -92,15 +102,15 @@ char	*ft_next(char *buffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
+	static char	*buffer[1024];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > 1024)
 		return (NULL);
-	buffer = ft_read(fd, buffer);
-	if (!buffer)
+	buffer[fd] = ft_read(fd, buffer[fd]);
+	if (!buffer[fd])
 		return (NULL);
-	line = ft_line(buffer);
-	buffer = ft_next(buffer);
+	line = ft_line(buffer[fd]);
+	buffer[fd] = ft_next(buffer[fd]);
 	return (line);
 }
